@@ -10,34 +10,48 @@
   <body>
     <h1>Game js</h1>
     <div class="container">
-      <div class="new-game">
-        <img src="plus.png" alt="Plus" />
-        <button id="new-game-btn">New game</button>
-      </div>
-      <div class="dice"><img id="dice-img" /></div>
-      <div class="roll-dice">
-        <img src="img/roll-dice.png" alt="Roll dice" />
-        <button id="dicebtn">Roll dice</button>
-      </div>
-      <div class="hold">
-        <img src="img/download.png" alt="Hold" />
-        <button id="holdbtn">Hold</button>
-      </div>
       <div class="player1">
-        <h2>Player 1 <img src="img/point.png" alt="point" /></h2>
-        <p class="score" id="score1">0</p>
+        <div class="round">
+          <img src="" alt="" id="point1" />
+          <h2 id="player1">Player 1</h2>
+          <p class="score" id="score1">0</p>
+        </div>
         <div class="current">
           <h3>Current</h3>
           <p class="current-score" id="current-score1">0</p>
         </div>
       </div>
       <div class="player2">
-        <h2>Player 2 <img src="img/point.png" alt="point" /></h2>
-        <p class="score" id="score2">0</p>
+        <div class="round">
+          <img src="" alt="" id="point2" />
+          <h2 id="player2">Player 2</h2>
+          <p class="score" id="score2">0</p>
+        </div>
         <div class="current">
           <h3>Current</h3>
           <p class="current-score" id="current-score2">0</p>
         </div>
+      </div>
+      <div class="new-game">
+        <button id="new-game-btn">
+          <img src="images/plus.png" alt="Plus" id="new-game-img" />
+          New game
+        </button>
+      </div>
+      <div class="dice"><img alt="dé" id="dice" /></div>
+      <div class="roll-dice">
+        <button id="dice-btn">
+          <img
+            src="images/roll-dice.png"
+            alt="Roll dice"
+            id="dice-btn-img"
+          />Roll dice
+        </button>
+      </div>
+      <div class="hold">
+        <button id="hold-btn">
+          <img src="images/download.png" alt="Hold" id="hold-btn-img" />Hold
+        </button>
       </div>
     </div>
     <script src="app.js"></script>

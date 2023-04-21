@@ -1,96 +1,153 @@
-const player1 = [(global = 0), (round = 0)];
-const player2 = [(global = 0), (round = 0)];
+// Jeu de dé
+// - le premier joueur qui arrive à 100 a gagné
+// 2 joueurs
+// - tour par tour
+// - bouton new game permet de reset les valeurs
+// - roll dice permet de lancer le dé, ajouter des points pour le joueur en cours.
+//    - si le joueur fait un alors on passe au joueur suivant
+// - Hold: sauvegarde le score du joueur courant et passe au jour suivant
 
-// management of the game
+// demander le nom des joueurs
+// valeurs
+// les points des joueurs
+// joueur en cour
+// afficher les noms des joueurs
 
-function defaultGame() {
-  player1[0] = 0;
-  player1[1] = 0;
-  player2[0] = 0;
-  player2[1] = 0;
-  document.querySelector("#score1").textContent = player1[0];
-  document.querySelector("#score2").textContent = player2[0];
-  document.querySelector("#current-score1").textContent = player1[1];
-  document.querySelector("#current-score2").textContent = player2[1];
-  document.querySelector("#dice-img").setAttribute("src", "img/dices/de-1.png");
+// fonctions
+// - fonction pour reset le jeu
+// - hold
+// - roll dice
+// - vérifier si un joueur a gagné
+// - afficher qui a gagné
+
+// Variables
+/*let player1 = prompt("Nom du joueur 1");
+let player2 = prompt("Nom du joueur 2");*/
+let roundScorePlayer1 = 0;
+let roundScorePlayer2 = 0;
+let globalScorePlayer1 = 0;
+let globalScorePlayer2 = 0;
+
+let currentPlayer = 1;
+
+// Afficher les noms des joueurs
+/*
+document.getElementById("player1").textContent = player1;
+document.getElementById("player2").textContent = player2;
+*/
+// Fonctions
+
+// Fonction pour reset le jeu
+
+function gameDefault() {
+  // reset des valeurs
+  roundScorePlayer1 = 0;
+  roundScorePlayer2 = 0;
+  globalScorePlayer1 = 0;
+  globalScorePlayer2 = 0;
+  currentPlayer = 1;
+  document.getElementById("score1").textContent = roundScorePlayer1;
+  document.getElementById("score2").textContent = roundScorePlayer2;
+  document.getElementById("current-score1").textContent = globalScorePlayer1;
+  document.getElementById("current-score2").textContent = globalScorePlayer2;
+  document.getElementById("dice").src = "images/de-1.png";
+  document.getElementById("point1").src = "images/point.png";
+  document.getElementById("point2").src = "";
 }
 
-// new game
-
-const newGame = document.querySelector("#new-game-btn");
-if (newGame) {
-  newGame.addEventListener("click", () => {
-    return defaultGame();
-  });
+function createNewGame() {
+  // reset du jeu
+  gameDefault();
+  document
+    .getElementById("new-game-btn")
+    .addEventListener("click", gameDefault);
 }
 
-defaultGame();
+createNewGame();
 
-// hold
-const hold = document.querySelector("#holdbtn");
-if (hold) {
-  hold.addEventListener("click", () => {
-    if (player1[0] > 0) {
-      player1[1] += player1[0];
-      document.querySelector("#current-score1").textContent = player1[1];
-      player1[0] = 0;
-      document.querySelector("#score1").textContent = player1[0];
-    } else {
-      player2[1] += 0;
-      document.querySelector("#current-score1").textContent = player2[1];
-      player2[0] = 0;
-      document.querySelector("#score1").textContent = player2[0];
+// Fonction pour lancer le dé
+
+function rollDice() {
+  // générer un nombre aléatoire entre 1 et 6
+  const diceResult = Math.ceil(Math.random() * 6);
+  // afficher le dé correspondant
+  document.getElementById("dice").src = `images/de-${diceResult}.png`;
+  // si le dé est différent de 1 alors on ajoute le résultat au score du joueur en cours
+  if (diceResult > 1) {
+    if (currentPlayer === 1) {
+      roundScorePlayer1 += diceResult;
+      document.getElementById("score1").textContent = roundScorePlayer1;
     }
-  });
-}
-
-// Roll dice player 1
-
-const dice = document.querySelector("#dicebtn");
-if (player1[0] > 1 || player2[0] > 1 || hold) {
-  if (dice) {
-    dice.addEventListener("click", () => {
-      const randomCalc = Math.floor(Math.random() * 6) + 1;
-      console.log(randomCalc);
-      if (randomCalc > 1) {
-        player1[0] += randomCalc;
-        document.querySelector("#score1").textContent = player1[0];
-      } else if (randomCalc === 1) {
-        player1[0] = 0;
-        document.querySelector("#score1").textContent = player1[0];
-      }
-
-      // Roll dice img
-
-      const diceImg = document.querySelector("#dice-img");
-      if (randomCalc === 1) {
-        diceImg.setAttribute("src", "img/dices/de-1.png");
-      } else if (randomCalc === 2) {
-        diceImg.setAttribute("src", "img/dices/de-2.png");
-      } else if (randomCalc === 3) {
-        diceImg.setAttribute("src", "img/dices/de-3.png");
-      } else if (randomCalc === 4) {
-        diceImg.setAttribute("src", "img/dices/de-4.png");
-      } else if (randomCalc === 5) {
-        diceImg.setAttribute("src", "img/dices/de-5.png");
-      } else if (randomCalc === 6) {
-        diceImg.setAttribute("src", "img/dices/de-6.png");
-      } else {
-        diceImg.setAttribute("src", "img/dices/de-1.png");
-      }
-    });
+    // sinon on passe au joueur suivant
+    if (currentPlayer === 2) {
+      roundScorePlayer2 += diceResult;
+      document.getElementById("score2").textContent = roundScorePlayer2;
+    }
+  } else {
+    // si le dé est égal à 1 alors on passe au joueur suivant
+    if (currentPlayer === 1) {
+      roundScorePlayer1 = 0;
+      document.getElementById("score1").textContent = roundScorePlayer1;
+    }
+    // sinon on passe au joueur suivant
+    if (currentPlayer === 2) {
+      roundScorePlayer2 = 0;
+      document.getElementById("score2").textContent = roundScorePlayer2;
+    }
+    // on change le joueur en cours
+    if (currentPlayer === 1) {
+      currentPlayer = 2;
+    } else {
+      currentPlayer = 1;
+    }
+    // on affiche le pointeur sur le joueur en cours
+    if (currentPlayer === 1) {
+      document.getElementById("point1").src = "images/point.png";
+    } else {
+      document.getElementById("point1").src = "";
+    }
+    if (currentPlayer === 2) {
+      document.getElementById("point2").src = "images/point.png";
+    } else {
+      document.getElementById("point2").src = "";
+    }
   }
 }
-/*
-Le jeu s’initialise. 
-Le joueur 1 Lance le dé 
-le score du joueur 1 s’incrémente. 
-- si il clique sur hold, le score round du joueur 1 est mis à jour.
-- si il fait un 1, le score global du joueur 1 est mis à 0 et c’est au joueur 2 de jouer.
-Le joueur 2 lance le dé
-le score du joueur 2 s’incrémente.
-- si il clique sur hold, le score round du joueur 2 est mis à jour.
-- si il fait un 1, le score global du joueur 2 est mis à 0 et c’est au joueur 1 de jouer.
-Le joueur 1 lance le dé
-ainsi de suite jusqu’à ce que l’un des joueurs atteigne 100 points.
-*/
+document.getElementById("dice-btn").addEventListener("click", rollDice);
+
+// Fonction pour sauvegarder le score du joueur en cours
+
+function hold() {
+  // on sauvegarde le score du joueur en cours
+  if (currentPlayer === 1) {
+    globalScorePlayer1 += roundScorePlayer1;
+    document.getElementById("current-score1").textContent = globalScorePlayer1;
+    roundScorePlayer1 = 0;
+    document.getElementById("score1").textContent = roundScorePlayer1;
+    currentPlayer = 2;
+    document.getElementById("point1").src = "";
+    document.getElementById("point2").src = "images/point.png";
+  } else {
+    globalScorePlayer2 += roundScorePlayer2;
+    document.getElementById("current-score2").textContent = globalScorePlayer2;
+    roundScorePlayer2 = 0;
+    document.getElementById("score2").textContent = roundScorePlayer2;
+    currentPlayer = 1;
+    document.getElementById("point2").src = "";
+    document.getElementById("point1").src = "images/point.png";
+  }
+}
+document.getElementById("hold-btn").addEventListener("click", hold);
+
+// Fonction pour vérifier si un joueur a gagné
+
+function checkWinner() {
+  if (globalScorePlayer1 >= 100) {
+    gameDefault();
+    return alert(`BRAVO ${player1} tu as gagné !`);
+  } else if (globalScorePlayer2 >= 100) {
+    gameDefault();
+    return alert(`BRAVO ${player2} tu as gagné !`);
+  }
+}
+document.getElementById("hold-btn").addEventListener("click", checkWinner);
