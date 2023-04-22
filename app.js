@@ -21,8 +21,8 @@
 // - afficher qui a gagné
 
 // Variables
-/*let player1 = prompt("Nom du joueur 1");
-let player2 = prompt("Nom du joueur 2");*/
+let player1 = prompt("Nom du joueur 1");
+let player2 = prompt("Nom du joueur 2");
 let roundScorePlayer1 = 0;
 let roundScorePlayer2 = 0;
 let globalScorePlayer1 = 0;
@@ -31,10 +31,10 @@ let globalScorePlayer2 = 0;
 let currentPlayer = 1;
 
 // Afficher les noms des joueurs
-/*
+
 document.getElementById("player1").textContent = player1;
 document.getElementById("player2").textContent = player2;
-*/
+
 // Fonctions
 
 // Fonction pour reset le jeu
